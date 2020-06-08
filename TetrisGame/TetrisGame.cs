@@ -121,6 +121,68 @@ namespace TetrisGame
                 }
             }
         }
+        private void PlaceShape(Point[] inputShape)
+        {
+            activeShapeNum = nextShape;
+            activeShape = inputShape.Select(x => x).ToArray();
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (matrix[activeShape[i].X, activeShape[i].Y] != 0)
+                    GameOver();
+            }
+
+            statsArr[activeShapeNum]++;
+            UpdateStatsLabel(activeShapeNum);
+
+            nextShape = random.Next(1, 8);
+
+            pbNextShape.BackgroundImage = Shapes.shapeImages[nextShape];
+        }
+
+        private void checkLines()
+        {
+            int linecount = 0;
+            var rowsToCheck = activeShape.Select(x => x.X).Distinct().OrderBy(x => x).ToArray();
+
+            for (int i = 0; i < rowsToCheck.Count(); i++)
+            {
+                bool line = true;
+
+                for (int e = 0; e < matWidth; e++)
+                {
+                    if (matrix[rowsToCheck[i], e] == 0)
+                    {
+                        line = false;
+                        break;
+                    }
+                }
+                if (line)
+                {
+                    linecount++;
+
+                    for (int d = rowsToCheck[i]; d > 0; d--)
+                    {
+                        for (int m = 0; m < matWidth; m++)
+                            matrix[d, m] = matrix[d - 1, m];
+                    }
+                }
+            }
+
+            if (linecount > 0)
+            {
+                lines += linecount;
+                lblLines.Text = "LINES - " + new string('0', 3 - lines.ToString().Length) + lines;
+
+                score += CalculateScore(linecount, speedLevel);
+                lblScore.Text = "SCORE" + "\n" + new string('0', 7 - score.ToString().Length) + score;
+
+                if ((lines / 10) > speedLevel) speedLevel = lines / 10;
+
+                timer.Interval = 1000 / speedLevel;
+                lblLevelNum.Text = "0" + speedLevel.ToString();
+            }
+        }
 
 
 
