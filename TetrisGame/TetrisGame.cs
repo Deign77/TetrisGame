@@ -209,7 +209,88 @@ namespace TetrisGame
             else return 1200 * level;
         }
 
+        private void TetrisGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.P:
+                    if (timer.Enabled)
+                    {
+                        timer.Stop();
+                        lblGameOver.Text = "PAUSED";
+                        lblGameOver.Visible = true;
+                    }
+                    else
+                    {
+                        timer.Start();
+                        lblGameOver.Visible = false;
+                    }
+                    break;
+                case Keys.Enter:
+                    NewGame();
+                    break;
+            }
 
+            if (timer.Enabled)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        try
+                        {
+                            if (activeShape.Where(b => matrix[b.X, b.Y - 1] < 0 || b.Y - 1 < 0).Count() == 0)
+                                activeShape = activeShape.Select(b => new Point(b.X, b.Y - 1)).ToArray();
+                        }
+                        catch (IndexOutOfRangeException) { }
+                        break;
+                    case Keys.Right:
+                        try
+                        {
+                            if (activeShape.Where(b => matrix[b.X, b.Y + 1] < 0 || b.Y + 1 < 0).Count() == 0)
+                                activeShape = activeShape.Select(b => new Point(b.X, b.Y + 1)).ToArray();
+                        }
+                        catch (IndexOutOfRangeException) { }
+                        break;
+                    case Keys.Down:
+                        try
+                        {
+                            if (activeShape.Where(b => matrix[b.X + 1, b.Y] < 0 || b.X + 1 > matHeight - 1).Count() == 0)
+                            {
+                                activeShape = activeShape.Select(b => new Point(b.X + 1, b.Y)).ToArray();
+                                score++;
+                                lblScore.Text = "SCORE" + "\n" + new string('0', 7 - score.ToString().Length) + score.ToString();
+                            }
+                        }
+                        catch (IndexOutOfRangeException) { }
+                        break;
+                    case Keys.Up:
+                        activeShape = Rotate(activeShape);
+                        break;
+                }
+            }
+        }
+
+        private Point[] Rotate(Point[] inputShape)
+        {
+            Point[] res = new Point[4];
+
+            int pivotX = inputShape[0].X;
+            int pivotY = inputShape[0].Y;
+
+            for (int i = 0; i < 4; i++)
+            {
+                int satX = inputShape[i].X - pivotX;
+                int satY = inputShape[i].Y - pivotY;
+
+                res[i].X = (0 * satX) + (-1 * satY) + pivotX;
+                res[i].Y = (1 * satX) + (0 * satY) + pivotY;
+            }
+
+            if (res.Count(b => b.Y < 0 || b.Y > matWidth - 1 || b.X > matHeight - 1 || matrix[b.X, b.Y] < 0) == 0)
+                return res;
+            else
+                return inputShape;
+        }
 
 
 

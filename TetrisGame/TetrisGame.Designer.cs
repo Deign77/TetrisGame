@@ -182,6 +182,7 @@
             this.Name = "TetrisGame";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.TetrisGame_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TetrisGame_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pbGameBoard)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbNextShape)).EndInit();
             this.ResumeLayout(false);
