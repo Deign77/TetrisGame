@@ -292,11 +292,43 @@ namespace TetrisGame
                 return inputShape;
         }
 
-
-
         private void TetrisGame_Load(object sender, EventArgs e)
         {
             lblGameOver.Visible = false;
+
+            pbStatsI.BackgroundImage = Shapes.shapeImages[1];
+            pbStatsJ.BackgroundImage = Shapes.shapeImages[2];
+            pbStatsL.BackgroundImage = Shapes.shapeImages[3];
+            pbStatsO.BackgroundImage = Shapes.shapeImages[4];
+            pbStatsS.BackgroundImage = Shapes.shapeImages[5];
+            pbStatsT.BackgroundImage = Shapes.shapeImages[6];
+            pbStatsZ.BackgroundImage = Shapes.shapeImages[7];
+        }
+
+        private void UpdateStatsLabel(int label)
+        {
+            if (label == 1) lblStatsI.Text = "x   " + statsArr[label];
+            else if (label == 2) lblStatsJ.Text = "x   " + statsArr[label];
+            else if (label == 3) lblStatsL.Text = "x   " + statsArr[label];
+            else if (label == 4) lblStatsO.Text = "x   " + statsArr[label];
+            else if (label == 5) lblStatsS.Text = "x   " + statsArr[label];
+            else if (label == 6) lblStatsT.Text = "x   " + statsArr[label];
+            else if (label == 7) lblStatsZ.Text = "x   " + statsArr[label];
+        }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewGame();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
