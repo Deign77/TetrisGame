@@ -106,6 +106,7 @@
             // pbNextShape
             // 
             this.pbNextShape.BackColor = System.Drawing.Color.Black;
+            this.pbNextShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pbNextShape.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pbNextShape.Location = new System.Drawing.Point(681, 332);
             this.pbNextShape.Name = "pbNextShape";
@@ -368,7 +369,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
+            this.BackColor = System.Drawing.Color.MediumBlue;
             this.ClientSize = new System.Drawing.Size(861, 920);
             this.Controls.Add(this.lblStatsJ);
             this.Controls.Add(this.lblStatsL);
