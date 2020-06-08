@@ -121,6 +121,7 @@ namespace TetrisGame
                 }
             }
         }
+
         private void PlaceShape(Point[] inputShape)
         {
             activeShapeNum = nextShape;
@@ -328,7 +329,8 @@ namespace TetrisGame
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            var m = new OptionsMenu();
+            m.Show();
         }
     }
 }
