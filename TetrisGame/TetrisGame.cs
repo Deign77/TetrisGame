@@ -209,13 +209,126 @@ namespace TetrisGame
             else return 1200 * level;
         }
 
+        private void TetrisGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.P:
+                    if (timer.Enabled)
+                    {
+                        timer.Stop();
+                        lblGameOver.Text = "PAUSED";
+                        lblGameOver.Visible = true;
+                    }
+                    else
+                    {
+                        timer.Start();
+                        lblGameOver.Visible = false;
+                    }
+                    break;
+                case Keys.Enter:
+                    NewGame();
+                    break;
+            }
 
+            if (timer.Enabled)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        try
+                        {
+                            if (activeShape.Where(b => matrix[b.X, b.Y - 1] < 0 || b.Y - 1 < 0).Count() == 0)
+                                activeShape = activeShape.Select(b => new Point(b.X, b.Y - 1)).ToArray();
+                        }
+                        catch (IndexOutOfRangeException) { }
+                        break;
+                    case Keys.Right:
+                        try
+                        {
+                            if (activeShape.Where(b => matrix[b.X, b.Y + 1] < 0 || b.Y + 1 < 0).Count() == 0)
+                                activeShape = activeShape.Select(b => new Point(b.X, b.Y + 1)).ToArray();
+                        }
+                        catch (IndexOutOfRangeException) { }
+                        break;
+                    case Keys.Down:
+                        try
+                        {
+                            if (activeShape.Where(b => matrix[b.X + 1, b.Y] < 0 || b.X + 1 > matHeight - 1).Count() == 0)
+                            {
+                                activeShape = activeShape.Select(b => new Point(b.X + 1, b.Y)).ToArray();
+                                score++;
+                                lblScore.Text = "SCORE" + "\n" + new string('0', 7 - score.ToString().Length) + score.ToString();
+                            }
+                        }
+                        catch (IndexOutOfRangeException) { }
+                        break;
+                    case Keys.Up:
+                        activeShape = Rotate(activeShape);
+                        break;
+                }
+            }
+        }
 
+        private Point[] Rotate(Point[] inputShape)
+        {
+            Point[] res = new Point[4];
 
+            int pivotX = inputShape[0].X;
+            int pivotY = inputShape[0].Y;
+
+            for (int i = 0; i < 4; i++)
+            {
+                int satX = inputShape[i].X - pivotX;
+                int satY = inputShape[i].Y - pivotY;
+
+                res[i].X = (0 * satX) + (-1 * satY) + pivotX;
+                res[i].Y = (1 * satX) + (0 * satY) + pivotY;
+            }
+
+            if (res.Count(b => b.Y < 0 || b.Y > matWidth - 1 || b.X > matHeight - 1 || matrix[b.X, b.Y] < 0) == 0)
+                return res;
+            else
+                return inputShape;
+        }
 
         private void TetrisGame_Load(object sender, EventArgs e)
         {
             lblGameOver.Visible = false;
+
+            pbStatsI.BackgroundImage = Shapes.shapeImages[1];
+            pbStatsJ.BackgroundImage = Shapes.shapeImages[2];
+            pbStatsL.BackgroundImage = Shapes.shapeImages[3];
+            pbStatsO.BackgroundImage = Shapes.shapeImages[4];
+            pbStatsS.BackgroundImage = Shapes.shapeImages[5];
+            pbStatsT.BackgroundImage = Shapes.shapeImages[6];
+            pbStatsZ.BackgroundImage = Shapes.shapeImages[7];
+        }
+
+        private void UpdateStatsLabel(int label)
+        {
+            if (label == 1) lblStatsI.Text = "x   " + statsArr[label];
+            else if (label == 2) lblStatsJ.Text = "x   " + statsArr[label];
+            else if (label == 3) lblStatsL.Text = "x   " + statsArr[label];
+            else if (label == 4) lblStatsO.Text = "x   " + statsArr[label];
+            else if (label == 5) lblStatsS.Text = "x   " + statsArr[label];
+            else if (label == 6) lblStatsT.Text = "x   " + statsArr[label];
+            else if (label == 7) lblStatsZ.Text = "x   " + statsArr[label];
+        }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewGame();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
