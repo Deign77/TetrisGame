@@ -99,6 +99,29 @@ namespace TetrisGame
             pbGameBoard.BackgroundImage = bitmap;
         }
 
+        private void UpdateBoard()
+        {
+            if (shapeLanded)
+            {
+                checkLines();
+                PlaceShape(Shapes.shapeList[nextShape]);
+                shapeLanded = false;
+            }
+            else
+            {
+                if (activeShape.Count(b => b.X >= matHeight - 1 || matrix[b.X + 1, b.Y] < 0) > 0)
+                    shapeLanded = true;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (shapeLanded)
+                        matrix[activeShape[i].X, activeShape[i].Y] = -activeShapeNum;
+                    else
+                        activeShape[i].X++;
+                }
+            }
+        }
+
 
 
 
