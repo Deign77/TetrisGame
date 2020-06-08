@@ -184,6 +184,31 @@ namespace TetrisGame
             }
         }
 
+        private void GameOver()
+        {
+            timer.Stop();
+            string topScore = "";
+            speedLevel = 1;
+
+            if (score > topscore)
+            {
+                topScore = "You got a new\n top score!";
+                topscore = score;
+                lblTopScore.Text = "TOP  \n" + new string('0', 7 - score.ToString().Length) + score.ToString() + topscore;
+            }
+
+            lblGameOver.Text = "GAME OVER!" + "\n" + topScore;
+            lblGameOver.Visible = true;
+        }
+
+        private int CalculateScore(int lines, int level)
+        {
+            if (lines == 1) return 40 * level;
+            else if (lines == 2) return 100 * level;
+            else if (lines == 3) return 300 * level;
+            else return 1200 * level;
+        }
+
 
 
 
